@@ -3,64 +3,75 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
-use App\Http\Requests\StoreEmployeeRequest;
-use App\Http\Requests\UpdateEmployeeRequest;
+use Illuminate\Http\Request; 
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $employees = Employee::latest()->paginate(5);
+        return view('employees.index', compact('employees'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('employees.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreEmployeeRequest $request)
+    public function store(Request $request) 
     {
-        //
+        $request->validate([
+            'nama_lengkap'   => 'required|string|max:255',
+            'email'          => 'required|email|max:255',
+            'nomor_telepon'  => 'required|string|max:20',
+            'tanggal_lahir'  => 'required|date',
+            'alamat'         => 'required|string|max:255',
+            'tanggal_masuk'  => 'required|date',
+            'status'         => 'required|string|max:50',
+        ]);
+
+        Employee::create($request->all());
+        return redirect()->route('employees.index')->with('success', 'Pegawai berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Employee $employee)
     {
-        //
+        return view('employees.show', compact('employee'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Employee $employee)
     {
-        //
+        return view('employees.edit', compact('employee'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateEmployeeRequest $request, Employee $employee)
+    public function update(Request $request, Employee $employee)
     {
-        //
+        $request->validate([
+            'nama_lengkap'   => 'required|string|max:255',
+            'email'          => 'required|email|max:255',
+            'nomor_telepon'  => 'required|string|max:20',
+            'tanggal_lahir'  => 'required|date',
+            'alamat'         => 'required|string|max:255',
+            'tanggal_masuk'  => 'required|date',
+            'status'         => 'required|string|max:50',
+        ]);
+
+        $employee->update($request->only([
+            'nama_lengkap',
+            'email',
+            'nomor_telepon',
+            'tanggal_lahir',
+            'alamat',
+            'tanggal_masuk',
+            'status',
+        ]));
+
+        return redirect()->route('employees.index')->with('success', 'Data pegawai berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
+        return redirect()->route('employees.index')->with('success', 'Data pegawai berhasil dihapus!');
     }
 }
