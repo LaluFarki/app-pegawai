@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('positions', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_karyawan'); // Ganti/tambah sesuai kebutuhan
-            $table->string('email')->unique(); // Ganti/tambah sesuai kebutuhan
-            $table->date('tanggal_masuk');
-            // TAMBAHKAN KOLOM LAIN DI SINI (jika ada)
+            $table->string('nama_jabatan', 100);
+            $table->decimal('gaji_pokok', 10, 2);
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('positions');
     }
 };
