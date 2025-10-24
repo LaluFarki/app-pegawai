@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_karyawan'); // Ganti/tambah sesuai kebutuhan
-            $table->string('email')->unique(); // Ganti/tambah sesuai kebutuhan
-            $table->date('tanggal_masuk');
-            // TAMBAHKAN KOLOM LAIN DI SINI (jika ada)
+            
+            // SAMAKAN DENGAN KODE INI
+            $table->string('nama_lengkap');  // Diubah dari 'nama_karyawan'
+            $table->string('email')->unique();
+            $table->string('nomor_telepon'); // DITAMBAHKAN
+            $table->date('tanggal_lahir');   // Diubah dari 'tanggal_masuk'
+
             $table->timestamps();
         });
     }
